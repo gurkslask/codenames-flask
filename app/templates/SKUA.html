@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codenames</title>
+    <style>
+        /* Add any additional styling here */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+            border: 10px solid rgb(0, 0, 0);
+            text-align: center;
+            line-height: 100px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-container" >
+    {% for i in range(1, 26) %}
+        <div class="box" onclick="changeColor(this, '{{ variable_list[i-1].Color }}')">
+            {{ variable_list[i-1].Name }}
+        </div>
+    {% endfor %}
+    </div>
+
+    {%if blue %}
+        Blue goes first
+    {% else %}
+        Red goes first
+    {% endif %}
+
+<script>
+    function changeColor(element, color) {
+        element.style.border = "10px solid " + color;
+        element.style.backgroundColor = color;
+    }
+</script>
+</body>
+</html>
