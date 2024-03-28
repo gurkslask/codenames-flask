@@ -9,6 +9,8 @@ services:
       - '1235:8000'
     volumes:
       - './app:/app'
+    networks:
+      - valhalla
 
 networks:
   valhalla:
