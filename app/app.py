@@ -49,7 +49,6 @@ def indexin():
 @app.route('/input', methods=['GET', 'POST'])
 def inpp():
     form = TextInputForm()
-    print(session['saved_text'])
 
     if form.validate_on_submit():
         text_input = form.text_input.data
