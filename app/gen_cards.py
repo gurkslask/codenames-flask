@@ -1,4 +1,4 @@
-import random
+import random, re
 
 def main() :
     with open("input.txt", 'r') as f:
@@ -40,6 +40,14 @@ def GenColors() -> (list[str], bool):
     random.shuffle(colors)
 
     return colors, blue
+
+def FixInput(instr: str) -> list[str]:
+    restr = re.compile("(\n|\r)")
+    instr = restr.sub(" ", instr)
+    restr = re.compile(" +")
+    instr = restr.sub(" ", instr)
+
+    return instr.split(" ")
 
 
 if __name__ == '__main__':

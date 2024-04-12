@@ -2,14 +2,32 @@ from flask import render_template, Flask, session, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
 import gen_cards
+import db
 
 
 app = Flask(__name__)
 app.secret_key = "SuperS3cret"
+dbCon, dbCur = db.initDB()
 
 class TextInputForm(FlaskForm):
     text_input = TextAreaField('Enter Text:')
     submit = SubmitField('Submit')
+    
+@app.route('/createnew/')
+def createnew():
+    return render_template('create_new.html')
+
+@app.route('/lists/')
+def lists(listnames=None):
+    listnames = db.GetLists(dbCon, dbCur)
+    return render_template('lists.html', listnames=listnames)
+
+@app.route('/wordsinlist/')
+@app.route('/wordsinlist/<name>')
+def wordsinlist(name=None):
+    print('hej')
+    names = db.GetWordsFromList(name, dbCon, dbCur)
+    return render_template('wordsinlist.html', names=names)
 
 @app.route('/hello/')
 @app.route('/hello/<name>')
@@ -33,10 +51,10 @@ def index():
 
 @app.route('/testin')
 def indexin():
-    data = session['saved_text'].split(" ")
+    data = gen_cards.FixInput(session['saved_text'])
     print(data)
 
-    data = [i.strip() for i in data]
+    #data = [i.strip() for i in data]
     print(data)
     variable_list = gen_cards.GenText(data)
 
