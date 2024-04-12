@@ -7,9 +7,11 @@
 </head>
 <body>
 
+    <h1> {{ listname }} </h1>
     {% for name in names %}
         <li> {{ name }}</li>
     {% endfor %}
 
+    <a href="/play/{{listname}}">Spela!</a>
 </body>
 </html>

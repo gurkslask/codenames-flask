@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add text to db</title>
+</head>
+<body>
+    <h1>Add text to db</h1>
+    <form method="post" action="/createnew">
+        {{ form.hidden_tag() }}
+        {{ form.listname.label }} {{ form.listname(cols=50,rows=2) }}
+        {{ form.words.label }} {{ form.words(cols=50,rows=20) }}
+        {{ form.submit() }}
+    </form>
+</body>
+</html>

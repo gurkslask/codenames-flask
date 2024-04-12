@@ -114,6 +114,8 @@ def GetWordsFromList(listName: str, con: sqlite3.Connection, cur: sqlite3.Cursor
         return 
     res = cur.execute("SELECT name FROM words WHERE ListID = ?", dataID)
     l = res.fetchall()
+    print(l)
+    l = [i[0] for i in l]
     return l
 
 def GetLists(con: sqlite3.Connection, cur: sqlite3.Cursor) -> list[any]:

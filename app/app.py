@@ -13,9 +13,31 @@ class TextInputForm(FlaskForm):
     text_input = TextAreaField('Enter Text:')
     submit = SubmitField('Submit')
     
-@app.route('/createnew/')
+class CreateNewForm(FlaskForm):
+    listname = TextAreaField('Name of list')
+    words = TextAreaField('Words')
+    submit = SubmitField('Submit')
+    
+@app.route('/createnew/', methods=['GET', 'POST'])
 def createnew():
-    return render_template('create_new.html')
+    # return render_template('create_new.html')
+    form = CreateNewForm()
+
+    if form.validate_on_submit():
+        listname = form.listname.data
+        words = form.words.data
+        # Save the input text to the session
+        # session['saved_text'] = text_input
+        # return indexin()
+        print(f"{listname}")
+        words = gen_cards.FixInput(words)
+        print(f"{words}")
+        db.InsertList(listname, dbCon, dbCur)
+        for word in words:
+            db.InsertWord(word, listname, dbCon, dbCur)
+        return lists()
+
+    return render_template('createnew.html', form=form)
 
 @app.route('/lists/')
 def lists(listnames=None):
@@ -27,7 +49,7 @@ def lists(listnames=None):
 def wordsinlist(name=None):
     print('hej')
     names = db.GetWordsFromList(name, dbCon, dbCur)
-    return render_template('wordsinlist.html', names=names)
+    return render_template('wordsinlist.html', names=names, listname=name)
 
 @app.route('/hello/')
 @app.route('/hello/<name>')
@@ -35,8 +57,8 @@ def hello(name=None):
     return render_template('hello.html', name=name)
 
 
-@app.route('/')
-def index():
+@app.route('/playtest')
+def playtest():
     with open("./input.txt", 'r') as f:
         data = f.readlines()
 
@@ -48,10 +70,27 @@ def index():
     card_list = [ Card(name, color_list[key]) for key, name in enumerate(variable_list)]
 
     return render_template('SKUA.html', variable_list=card_list, blue=blue)
-
+@app.route('/')
+def index():
+    return render_template('index.html')
 @app.route('/testin')
 def indexin():
     data = gen_cards.FixInput(session['saved_text'])
+    print(data)
+
+    #data = [i.strip() for i in data]
+    print(data)
+    variable_list = gen_cards.GenText(data)
+
+    color_list, blue = gen_cards.GenColors()# True = Blue, False = red
+
+    card_list = [ Card(name, color_list[key]) for key, name in enumerate(variable_list)]
+
+    return render_template('SKUA.html', variable_list=card_list, blue=blue)
+
+@app.route('/play/<name>')
+def play(name=None):
+    data = db.GetWordsFromList(name, dbCon, dbCur)
     print(data)
 
     #data = [i.strip() for i in data]
