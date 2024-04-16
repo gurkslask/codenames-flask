@@ -105,7 +105,7 @@ def InsertWord(text: str, listName: str, con: sqlite3.Connection, cur: sqlite3.C
     res = cur.execute("Insert INTO words(Name, ListID) VALUES (?, ?)", datalist)
     con.commit()
 
-
+# Get all the words from a specified list
 def GetWordsFromList(listName: str, con: sqlite3.Connection, cur: sqlite3.Cursor) -> list[any]:
     sl = (listName, )
     res = cur.execute("SELECT ListID FROM lists WHERE Name=?", sl)
@@ -118,9 +118,20 @@ def GetWordsFromList(listName: str, con: sqlite3.Connection, cur: sqlite3.Cursor
     l = [i[0] for i in l]
     return l
 
+# Get all the lists in the database
 def GetLists(con: sqlite3.Connection, cur: sqlite3.Cursor) -> list[any]:
     res = cur.execute("SELECT Name FROM lists")
     return [i[0] for i in res.fetchall()]
+    
+# Delete list and all the words that corresponds
+def DeleteList(listName: str, con: sqlite3.Connection, cur: sqlite3.Cursor):
+    sl = (listName, )
+    res = cur.execute("SELECT ListID FROM lists WHERE Name=?", sl)
+    dataID = res.fetchone()
+    res = cur.execute("DELETE FROM words WHERE ListID = ?", dataID)
+    con.commit()
+    res = cur.execute("DELETE FROM lists WHERE ListID = ?", dataID)
+    con.commit()
     
 
 
