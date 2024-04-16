@@ -115,6 +115,10 @@ def inpp():
 
     return render_template('input.html', form=form, saved_text=session.get('saved_text', ''))
 
+@app.route('/rules')
+def rules():
+    return render_template('rules.html')
+
 
 class Card():
     def __init__(self, name, color):
