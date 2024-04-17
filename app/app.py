@@ -1,6 +1,7 @@
 from flask import render_template, Flask, session, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
+import json
 import gen_cards
 import db
 
@@ -68,11 +69,23 @@ def playtest():
     color_list, blue = gen_cards.GenColors()# True = Blue, False = red
 
     card_list = [ Card(name, color_list[key]) for key, name in enumerate(variable_list)]
+    session['card_list'] = [c.toJson() for c in card_list]
+    session['blue'] = blue
 
     return render_template('SKUA.html', variable_list=card_list, blue=blue)
+
+@app.route('/playmap/')
+def playmap():
+    card_list = session['card_list']
+    card_list = [json.loads(c) for c in card_list]
+    blue = session['blue']
+
+    return render_template('SKUA_map.html', variable_list=card_list, blue=blue)
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 @app.route('/testin')
 def indexin():
     data = gen_cards.FixInput(session['saved_text'])
@@ -86,6 +99,8 @@ def indexin():
 
     card_list = [ Card(name, color_list[key]) for key, name in enumerate(variable_list)]
 
+    session['card_list'] = [c.toJson() for c in card_list]
+    session['blue'] = blue
     return render_template('SKUA.html', variable_list=card_list, blue=blue)
 
 @app.route('/play/<name>')
@@ -101,6 +116,8 @@ def play(name=None):
 
     card_list = [ Card(name, color_list[key]) for key, name in enumerate(variable_list)]
 
+    session['card_list'] = [c.toJson() for c in card_list]
+    session['blue'] = blue
     return render_template('SKUA.html', variable_list=card_list, blue=blue)
 
 @app.route('/input', methods=['GET', 'POST'])
@@ -124,6 +141,8 @@ class Card():
     def __init__(self, name, color):
         self.Color = color
         self.Name = name
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
 
 
 if __name__ == '__main__':

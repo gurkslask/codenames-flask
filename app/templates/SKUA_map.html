@@ -28,7 +28,7 @@
 
     <div class="grid-container" >
     {% for i in range(1, 26) %}
-        <div class="box" onclick="changeColor(this, '{{ variable_list[i-1].Color }}')">
+        <div class="box" onclick="changeColor(this, '{{ variable_list[i-1].Color }}')" style="border: 10px solid {{ variable_list[i-1].Color }}; backgroundColor: {{ variable_list[i-1].Color }}">
             {{ variable_list[i-1].Name }}
         </div>
     {% endfor %}
@@ -39,8 +39,6 @@
     {% else %}
         Red goes first
     {% endif %}
-    <br>
-    <a href="/playmap/">Map</a>
 
 <script>
     function changeColor(element, color) {
