@@ -9,19 +9,27 @@
         .grid-container {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
+            column-gap: 1%;
+            row-gap: 5%;
             justify-content: center;
+            width: 90vw;
+            height: 90vh;
         }
 
         .box {
-            width: 200px;
-            height: 200px;
-            margin: 10px;
-            border: 10px solid rgb(0, 0, 0);
+            margin: 2px;
+            border: 5px solid rgb(0, 0, 0);
+            background-color: rgb(255, 255, 255);
             text-align: center;
-            line-height: 100px;
             cursor: pointer;
+            font-size: 1.5vw;
+            
         }
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
     </style>
 </head>
 <body>
