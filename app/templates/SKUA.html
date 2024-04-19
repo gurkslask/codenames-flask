@@ -36,7 +36,7 @@
 
     <div class="grid-container" >
     {% for i in range(1, 26) %}
-        <div class="box" onclick="changeColor(this, '{{ variable_list[i-1].Color }}')">
+        <div class="box" onclick="changeColor(this, '{{ variable_list[i-1].Color }}')" id="{{i}}">
             {{ variable_list[i-1].Name }}
         </div>
     {% endfor %}
@@ -50,10 +50,21 @@
     <br>
     <a href="/playmap/">Map</a>
 
+
 <script>
+    let dict = {}
     function changeColor(element, color) {
-        element.style.border = "10px solid " + color;
-        element.style.backgroundColor = color;
+        if (dict[element.id] == color) {
+            element.style.border = "5px solid " + "black";
+            element.style.backgroundColor = "white";
+            dict[element.id] = "";
+        } else {
+            element.style.border = "5px solid " + color;
+            element.style.backgroundColor = color;
+            dict[element.id] = color;
+        }
+
+        console.log(dict)
     }
 </script>
 </body>
