@@ -10,8 +10,8 @@ services:
     volumes:
       - './app:/app'
     networks:
-      - valhalla
+      - kagg_valhalla
 
 networks:
-  valhalla:
+  kagg_valhalla:
     external: true
